@@ -124,7 +124,7 @@ public class Detail_Book extends AppCompatActivity {
     //Download managements
 
     private int REQUEST_WRITE_PERMISSION_CODE = 1;
-    private TextView ketab,detail_txt;
+    private TextView ketab,detail_txt,summery;
     private AutofitTextView fullname,author,publisher,year,edition,pages;
     private ImageView imageView;
     private KenBurnsView back;
@@ -190,6 +190,12 @@ public class Detail_Book extends AppCompatActivity {
         year = findViewById(R.id.year);
         edition = findViewById(R.id.edition);
         pages = findViewById(R.id.pages);
+        summery = findViewById(R.id.summery);
+
+        textViewProgressOne = (TextView) findViewById(R.id.textViewProgressOne);
+        buttonOne = (Button) findViewById(R.id.buttonOne);
+        textViewProgressOne = (TextView) findViewById(R.id.textViewProgressOne);
+        progressBarOne = (ProgressBar) findViewById(R.id.progressBarOne);
 
         author.setText("نویسنده : "+b.getAuthor());
         publisher.setText("ناشر : "+b.getPublisher());
@@ -206,6 +212,7 @@ public class Detail_Book extends AppCompatActivity {
         description.setText(b.getDescription());
         fullname.setText(b.getFullName());
         fullname.setTypeface(MainActivity.my_font);
+        summery.setTypeface(MainActivity.my_font);
 
         ketab.setTypeface(MainActivity.my_font);
         detail_txt.setTypeface(MainActivity.my_font);
@@ -289,5 +296,214 @@ public class Detail_Book extends AppCompatActivity {
             makeDBInvisible(View.GONE, View.VISIBLE);
         }*/
     }
+    public void StartDownload(View view) {
+        Dexter.withActivity(Detail_Book.this)
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+                            Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
+                            startDownload(/*b.getBookURL()*/"http://bayanbox.ir/download/6663019729830843802/20110213120514-629-protected.pdf");
+                        }
 
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // show alert dialog navigating to Settings
+                            showSettingsDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
+
+    }
+    private void showSettingsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Detail_Book.this);
+        builder.setTitle("مجوز های لازم");
+        builder.setMessage("این برنامه باید اجازه استفاده از این ویژگی را داشته باشد. شما می\u200Cتوانید آن\u200Cها را در تنظیمات app به آن\u200Cها اعطا کنید.");
+        builder.setPositiveButton("برو به تنظیمات برنامه", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                openSettings();
+            }
+        });
+        builder.setNegativeButton("لغو", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+    private void openSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 101);
+    }
+
+    private void startDownload(String url) {
+        if (Status.RUNNING == PRDownloader.getStatus(downloadIdOne)) {
+            PRDownloader.pause(downloadIdOne);
+            return;
+        }
+
+        buttonOne.setEnabled(false);
+        progressBarOne.setIndeterminate(true);
+        progressBarOne.getIndeterminateDrawable().setColorFilter(
+                Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN);
+
+        if (Status.PAUSED == PRDownloader.getStatus(downloadIdOne)) {
+            PRDownloader.resume(downloadIdOne);
+            return;
+        }
+        file = new File (Environment.getExternalStorageDirectory(),"Ketabeman/Books");
+
+        downloadIdOne = PRDownloader.download(url, file.getPath(), b.getName()+".pdf")
+                .build()
+                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                    @Override
+                    public void onStartOrResume() {
+                        progressBarOne.setIndeterminate(false);
+                        buttonOne.setEnabled(true);
+                        buttonOne.setText("pause");
+                        buttonCancelOne.setEnabled(true);
+                    }
+                })
+                .setOnPauseListener(new OnPauseListener() {
+                    @Override
+                    public void onPause() {
+                        buttonOne.setText("ادامه");
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel() {
+                        buttonOne.setText("شروع");
+                        buttonCancelOne.setEnabled(false);
+                        progressBarOne.setProgress(0);
+                        textViewProgressOne.setText("");
+                        downloadIdOne = 0;
+                        progressBarOne.setIndeterminate(false);
+                    }
+                })
+                .setOnProgressListener(new OnProgressListener() {
+                    @Override
+                    public void onProgress(Progress progress) {
+                        double progressPercent = progress.currentBytes * 100 / progress.totalBytes;
+                        progressBarOne.setProgress((int) progressPercent);
+                        textViewProgressOne.setText(Utils.getProgressDisplayLine(progress.currentBytes, progress.totalBytes));
+                        progressBarOne.setIndeterminate(false);
+                    }
+                })
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        try {
+                            //new SaveData(Detail_Book.this).execute(b.getCover());
+                        }
+                        catch (Exception e){
+                            Toast.makeText(Detail_Book.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        textViewProgressOne.setText("");
+                        progressBarOne.setProgress(0);
+                        downloadIdOne = 0;
+                        buttonCancelOne.setEnabled(false);
+                        progressBarOne.setIndeterminate(false);
+                        buttonOne.setEnabled(true);
+                        Log.e("Error",error.toString());
+                    }
+                });
+    }
+
+
+
+    class SaveData extends AsyncTask<String,Integer,String> {
+        String strFolderName;
+        private ProgressDialog dialog;
+
+        public SaveData(Detail_Book activity) {
+            dialog = new ProgressDialog(getApplicationContext());
+        }
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("در حال آماده سازی فایل PDF");
+            dialog.show();
+            SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(Detail_Book.this);
+            try {
+              /*  up = GenerateSerialNumber.createTransactionID(sharedPreferencesHelper.getString(Constants.USERNAME));
+                ManipulateData.makeReadyPDF(Detail_Book.this,getBaseContext(),b.getName(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "DecoderStore/Books/" + b.getName()+".pdf", up,sharedPreferencesHelper.getString(Constants.USERNAME));*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            super.onPreExecute();
+        }
+        @Override
+        protected String doInBackground(String... aurl) {
+            int count;
+            try {
+                URL url = new URL((String) aurl[0]);
+                URLConnection conexion = url.openConnection();
+                conexion.connect();
+                String targetFileName=b.getBookId()+".png";//Change name and subname
+                int lenghtOfFile = conexion.getContentLength();
+                String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "DecoderStore/Books/covers/";
+                File folder = new File(PATH);
+                if(!folder.exists()){
+                    folder.mkdir();//If there is no folder it will be created.
+                }
+                InputStream input = new BufferedInputStream(url.openStream());
+                OutputStream output = new FileOutputStream(PATH+targetFileName);
+                byte data[] = new byte[1024];
+                long total = 0;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    publishProgress ((int)(total*100/lenghtOfFile));
+                    output.write(data, 0, count);
+                }
+                output.flush();
+                output.close();
+                input.close();
+            } catch (Exception e) {}
+
+            return null;
+        }
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+        protected void onPostExecute(String result) {
+            //blackBox = new BlackBox(Detail.this);
+           /* try{
+                offlineBookDB.insertdata(cvs(b.getBookID()),b.getName(),b.getAuthor(),cvs(b.getEdition()),cvs(b.getPageNumber()),cvs(b.getISBN()),cvs(b.getAuthorType()),b.getDescription(),b.getBookURL(),cvs(b.getJeld()),b.getBookCoverPicture(),String.valueOf( b.getBookPrice()),cvs(b.getPublishYear()),cvs(b.getWaitingList()), AESCrypt.encrypt(blackBox.dhcp2FromJNI(),up),cvs(b.getActionType()),String.valueOf(b.getActionTime()));
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            }*/
+            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "DecoderStore/Books/" + b.getName()+".pdf");
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+          //  open_pdf_in_PDFReader(file,true);
+        }
+    }
 }

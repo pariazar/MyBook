@@ -159,6 +159,7 @@
                         android:maxLines="4"
                         android:textStyle="bold"
                         android:gravity="right"
+                        android:textColor="@color/cardview_dark_background"
                         android:textDirection="rtl"
                         android:text="نویسنده:"/>
                     <me.grantland.widget.AutofitTextView
@@ -256,6 +257,67 @@
                         android:onClick="sendComment"
                         android:src="@drawable/comment" />
                 </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/donwnloadmg"
+                    android:layout_below="@+id/userInfoBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                   >
+                    <TextView
+                        android:id="@+id/textViewProgressOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/cardview_light_background"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_alignTop="@+id/progressBarOne"
+                        android:layout_centerHorizontal="true" />
+                    <ProgressBar
+                        android:id="@+id/progressBarOne"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progressTint="@color/colorPrimaryDark"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="35dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/linearLayout2"
+                        android:layout_below="@+id/progressBarOne"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true">
+
+
+                        <info.hoang8f.widget.FButton
+                            android:id="@+id/buttonOne"
+                            android:onClick="StartDownload"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:backgroundTint="@color/bg_screen2"
+                            app:buttonColor="@color/colorAccentLightDefault"
+                            android:text="دانلود کتاب" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/summery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="توصیحات کتاب"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/donwnloadmg"
+                    android:textDirection="rtl"
+                    android:gravity="right"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    />
                 <!-- sample xml -->
                 <com.ms.square.android.expandabletextview.ExpandableTextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -263,7 +325,7 @@
                     android:id="@+id/expand_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/userInfoBar"
+                    android:layout_below="@+id/summery"
                     android:layout_marginTop="20dp"
                     expandableTextView:maxCollapsedLines="4"
                     expandableTextView:animDuration="200">
@@ -283,6 +345,7 @@
                         android:layout_gravity="right|bottom"
                         android:background="@android:color/transparent"/>
                 </com.ms.square.android.expandabletextview.ExpandableTextView>
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
