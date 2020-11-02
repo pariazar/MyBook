@@ -22,7 +22,8 @@
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="240dp"
+                android:padding="5dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:scaleType="fitXY"
@@ -93,18 +94,12 @@
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimary"
                     android:textColor="@color/cardview_light_background"
-                    android:text="جزئیات"
+                    android:text="دانلود"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"
                     />
 
-                <Button
-                    android:id="@+id/buy_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_version"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/cardview_light_background"
-                    android:textColor="@color/cardview_dark_background"
-                    android:text="خرید" />
             </LinearLayout>
         </RelativeLayout>
 

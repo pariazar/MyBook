@@ -14,9 +14,12 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ketabeman21.Activity.Detail_Book;
+import com.example.ketabeman21.Activity.MainActivity;
 import com.example.ketabeman21.Adapter.DataAdapter4Book;
 import com.example.ketabeman21.Model.Book;
 import com.example.ketabeman21.Network.JSONResponse;
@@ -36,7 +39,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapterListener {
+public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapterListener,DataAdapter4Book.BookDetailAdapterListener {
 
     private RecyclerView mRecyclerView;
     private ArrayList<Book> mArrayList;
@@ -82,9 +85,11 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.card_recycler_view);
         /*mShimmerViewContainer.setVisibility(View.INVISIBLE);
         mRecyclerView.setHasFixedSize(true);*/
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-         // true if item was selected
-        mRecyclerView.setLayoutManager(layoutManager);
+        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+
+        // true if item was selected
+       // mRecyclerView.setLayoutManager(layoutManager);
 
     }
     private void loadJSON(){
@@ -101,12 +106,9 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
 
                 JSONResponse jsonResponse = response.body();
-                Toast.makeText(getContext(), "response", Toast.LENGTH_SHORT).show();
-                Log.e("hamedvit",jsonResponse.toString());
                 mArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getBook()));
-                mAdapter = new DataAdapter4Book(mArrayList,getActivity(),BookFragment.this);
+                mAdapter = new DataAdapter4Book(mArrayList,getActivity(),BookFragment.this,BookFragment.this);
                 mRecyclerView.setAdapter(mAdapter);
-                Toast.makeText(getContext(), "0k", Toast.LENGTH_SHORT).show();
                /* mShimmerViewContainer.stopShimmerAnimation();
                 mShimmerViewContainer.setVisibility(View.GONE);*/
             }
@@ -141,8 +143,7 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
 
     @Override
     public void onContactSelected(Book book) {
-
-
+        Toast.makeText(getContext(), book.getFullName(), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -168,4 +169,11 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
     }
 
 
+    @Override
+    public void onBookSelected(Book book) {
+        Toast.makeText(getContext(), book.getAuthor()+"دانلود کتاب ", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(getContext(), Detail_Book.class);
+        i.putExtra("ibook",book);
+        startActivity(i);
+    }
 }

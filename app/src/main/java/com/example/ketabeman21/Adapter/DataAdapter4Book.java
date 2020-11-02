@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -27,13 +29,15 @@ public class DataAdapter4Book extends RecyclerView.Adapter<DataAdapter4Book.View
     private ArrayList<Book> mFilteredList;
     private Context context;
     private BookAdapterListener listener;
+    private BookDetailAdapterListener listener2;
     private View nView;
 
-    public DataAdapter4Book(ArrayList<Book> arrayList, Context context, BookAdapterListener listener) {
+    public DataAdapter4Book(ArrayList<Book> arrayList, Context context, BookAdapterListener listener,BookDetailAdapterListener listener2) {
         mArrayList = arrayList;
         mFilteredList = arrayList;
         this.context = context;
         this.listener = listener;
+        this.listener2 = listener2;
     }
 
     @Override
@@ -158,6 +162,8 @@ public class DataAdapter4Book extends RecyclerView.Adapter<DataAdapter4Book.View
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_name,tv_version,tv_username,tv_price;
         private ImageView iv_pic;
+        private CardView card_view;
+        private Button detail;
        // private CircleImageView userImage;
         public ViewHolder(View view) {
             super(view);
@@ -166,19 +172,31 @@ public class DataAdapter4Book extends RecyclerView.Adapter<DataAdapter4Book.View
             tv_username = (TextView)view.findViewById(R.id.username);
             tv_version = (TextView)view.findViewById(R.id.tv_version);
             iv_pic = (ImageView) view.findViewById(R.id.image);
+            card_view = view.findViewById(R.id.card_view);
+            detail = view.findViewById(R.id.detail_button);
             //userImage = view.findViewById(R.id.iconUser);
             tv_price = view.findViewById(R.id.price);
             nView = view;
-            view.setOnClickListener(new View.OnClickListener() {
+            card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // send selected contact in callback
                     listener.onContactSelected(mFilteredList.get(getAdapterPosition()));
                 }
             });
+            detail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener2.onBookSelected(mFilteredList.get((getAdapterPosition())));
+                }
+            });
+
         }
     }
     public interface BookAdapterListener {
         void onContactSelected(Book book);
+    }
+    public interface BookDetailAdapterListener {
+        void onBookSelected(Book book);
     }
 }

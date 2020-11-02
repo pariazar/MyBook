@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class Book implements Serializable {
+    private String bookId;
     private String Name;
     private String FullName;
     private String Author;
@@ -167,5 +168,14 @@ public class Book implements Serializable {
 
     public void setSubid(String subid) {
         this.subid = subid;
+    }
+
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 }

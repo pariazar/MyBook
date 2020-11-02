@@ -4,18 +4,15 @@
 
         <item
             android:id="@+id/nav_conversation"
-            android:icon="@drawable/ic_launcher_background"
-            android:title="پیام رسان" />
+            android:icon="@drawable/home"
+            android:title="خانه" />
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/baseline_list_black_18dp"
-            android:title="لیست کتاب ها" />
+            android:icon="@drawable/magni"
+            android:title="جستجو" />
         <item
             android:id="@+id/nav_mybooks"
-            android:icon="@drawable/ic_launcher_foreground"
-            android:title="کتاب های من" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_launcher_background"
-            android:title="پروفایل" />
+            android:icon="@drawable/downloads"
+            android:title="دانلودها" />
+
 </menu>

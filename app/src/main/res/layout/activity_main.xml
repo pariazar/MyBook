@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/container"
@@ -23,9 +23,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:itemBackground="@color/cardview_light_background"
-        app:itemIconTint="@color/colorPrimary"
-        app:itemTextColor="@color/cardview_light_background"
+        app:itemBackground="@color/view_background"
+        app:itemIconTint="@color/cardview_dark_background"
+        app:itemTextColor="@color/btn_login"
+        android:textDirection="rtl"
         app:menu="@menu/main_menu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

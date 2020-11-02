@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_marginBottom="70dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:clickable="true"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                app:layout_collapseMode="parallax">
+                <com.flaviofaria.kenburnsview.KenBurnsView
+                    android:id="@+id/back"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:fitsSystemWindows="true"
+                    android:src="@drawable/downloads"
+                    app:layout_collapseMode="pin" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#8C000000"
+                    >
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:id="@+id/cover"
+                        android:layout_width="150dp"
+                        android:layout_height="190dp"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:src="@color/bg_login"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/ketab"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_toStartOf="@+id/cover"
+                        android:layout_toLeftOf="@+id/cover"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/cardview_light_background"
+                        android:gravity="right"
+                        android:textDirection="rtl"
+                        android:text="نام کتاب :  "/>
+"
+                    <me.grantland.widget.AutofitTextView
+                        android:id="@+id/fullname"
+                        android:singleLine="false"
+                        android:maxLines="4"
+                        android:layout_below="@+id/ketab"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_toStartOf="@+id/cover"
+                        android:layout_toLeftOf="@+id/cover"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:gravity="left"
+                        android:textDirection="ltr"
+                        android:text="نام کتاب :  Practical LPIC-1 Linux Certification Study Guide"
+                        android:textColor="@color/cardview_light_background" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/cardview_light_background"
+        android:fillViewport="true"
+
+        app:behavior_overlapTop="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="2dp"
+            android:layout_below="@+id/toolbar"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp">
+                <TextView
+                    android:id="@+id/detail_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="جزئیات کتاب"
+                    android:textDirection="rtl"
+                    android:gravity="right"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    />
+                <RelativeLayout
+                    android:id="@+id/detailBox"
+                    android:layout_below="@+id/detail_txt"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <me.grantland.widget.AutofitTextView
+                        android:id="@+id/author"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:textSize="18dp"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="false"
+                        android:maxLines="4"
+                        android:textStyle="bold"
+                        android:gravity="right"
+                        android:textDirection="rtl"
+                        android:text="نویسنده:"/>
+                    <me.grantland.widget.AutofitTextView
+                        android:id="@+id/publisher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:textSize="18dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_below="@+id/author"
+                        android:singleLine="false"
+                        android:maxLines="4"
+                        android:textStyle="bold"
+                        android:gravity="right"
+                        android:textDirection="rtl"
+                        android:text="ناشر :"
+                        android:textColor="@color/cardview_dark_background" />
+                    <me.grantland.widget.AutofitTextView
+                        android:id="@+id/year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:textSize="18dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_below="@+id/publisher"
+                        android:singleLine="false"
+                        android:maxLines="4"
+                        android:textStyle="bold"
+                        android:gravity="right"
+                        android:textDirection="rtl"
+                        android:text="سال انتشار:"
+                        android:textColor="@color/cardview_dark_background" />
+                    <me.grantland.widget.AutofitTextView
+                        android:id="@+id/edition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:textSize="18dp"
+                        android:layout_below="@+id/year"
+                        android:layout_marginTop="2dp"
+                        android:singleLine="false"
+                        android:maxLines="4"
+                        android:textStyle="bold"
+                        android:gravity="right"
+                        android:textDirection="rtl"
+                        android:text="نسخه :"
+                        android:textColor="@color/cardview_dark_background" />
+                    <me.grantland.widget.AutofitTextView
+                        android:id="@+id/pages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:textSize="18dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_below="@+id/edition"
+                        android:singleLine="false"
+                        android:maxLines="4"
+                        android:textStyle="bold"
+                        android:gravity="right"
+                        android:textDirection="rtl"
+                        android:text="تعداد صفحات :"
+                        android:textColor="@color/cardview_dark_background" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_below="@+id/detailBox"
+                    android:orientation="horizontal"
+                    android:minWidth="10px"
+                    android:minHeight="10px"
+                    android:background="@color/cardview_light_background"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userInfoBar"
+                    android:padding="30dp"
+                    android:weightSum="1"
+                    >
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/share"
+                        android:onClick="share"
+                        />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:onClick="downloadNow"
+                        android:src="@drawable/download"
+                        android:layout_weight="1"
+                        />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:onClick="sendComment"
+                        android:src="@drawable/comment" />
+                </LinearLayout>
+                <!-- sample xml -->
+                <com.ms.square.android.expandabletextview.ExpandableTextView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/expand_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/userInfoBar"
+                    android:layout_marginTop="20dp"
+                    expandableTextView:maxCollapsedLines="4"
+                    expandableTextView:animDuration="200">
+                    <TextView
+                        android:id="@id/expandable_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="16sp"
+                        android:textColor="#666666" />
+                    <ImageButton
+                        android:id="@id/expand_collapse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:layout_gravity="right|bottom"
+                        android:background="@android:color/transparent"/>
+                </com.ms.square.android.expandabletextview.ExpandableTextView>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="نمایش نظرات"
+                    android:onClick="showAllComments"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/expand_text_view"
+                    />
+            </RelativeLayout>
+
+
+        </ScrollView>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
