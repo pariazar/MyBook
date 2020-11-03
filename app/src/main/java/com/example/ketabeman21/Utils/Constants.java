@@ -3,7 +3,7 @@ package com.example.ketabeman21.Utils;
 public class Constants {
     public static final String BASE_URL = "http://adminlokatl.pariazar.ir";
     public static final String Image_Directory = "https://ketabeman.pariazar.ir/assets/cover/";
-    public static final String FULLNAME = "fullname";
+    public static final String Book_Directory = "http://ketabeman.pariazar.ir/assets/bookfile/";
     public static final String USERNAME = "username";
     public static final String USER_TYPE = "user_type";
     public static final String APP_ID = "app_id";

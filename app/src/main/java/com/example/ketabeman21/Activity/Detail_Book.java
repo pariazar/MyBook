@@ -124,7 +124,7 @@ public class Detail_Book extends AppCompatActivity {
     //Download managements
 
     private int REQUEST_WRITE_PERMISSION_CODE = 1;
-    private TextView ketab,detail_txt,summery;
+    private TextView ketab,detail_txt,summery,downloadtxt;
     private AutofitTextView fullname,author,publisher,year,edition,pages;
     private ImageView imageView;
     private KenBurnsView back;
@@ -177,7 +177,12 @@ public class Detail_Book extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        b = (Book) getIntent().getSerializableExtra("ibook");
+        try{
+            b = (Book) getIntent().getSerializableExtra("ibook");
+        }
+        catch (Exception e){
+
+        }
         //title = findViewById(R.id.bookTitle);
         description = (ExpandableTextView) findViewById(R.id.expand_text_view);
         imageView = findViewById(R.id.cover);
@@ -191,11 +196,12 @@ public class Detail_Book extends AppCompatActivity {
         edition = findViewById(R.id.edition);
         pages = findViewById(R.id.pages);
         summery = findViewById(R.id.summery);
-
+        downloadtxt = findViewById(R.id.downloadtxt);
         textViewProgressOne = (TextView) findViewById(R.id.textViewProgressOne);
         buttonOne = (Button) findViewById(R.id.buttonOne);
         textViewProgressOne = (TextView) findViewById(R.id.textViewProgressOne);
         progressBarOne = (ProgressBar) findViewById(R.id.progressBarOne);
+        buttonCancelOne = (Button) findViewById(R.id.buttonCancelOne);
 
         author.setText("نویسنده : "+b.getAuthor());
         publisher.setText("ناشر : "+b.getPublisher());
@@ -213,7 +219,7 @@ public class Detail_Book extends AppCompatActivity {
         fullname.setText(b.getFullName());
         fullname.setTypeface(MainActivity.my_font);
         summery.setTypeface(MainActivity.my_font);
-
+        downloadtxt.setTypeface(MainActivity.my_font);
         ketab.setTypeface(MainActivity.my_font);
         detail_txt.setTypeface(MainActivity.my_font);
         AutofitHelper.create(fullname);
@@ -307,7 +313,7 @@ public class Detail_Book extends AppCompatActivity {
                         // check if all permissions are granted
                         if (report.areAllPermissionsGranted()) {
                             Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
-                            startDownload(/*b.getBookURL()*/"http://bayanbox.ir/download/6663019729830843802/20110213120514-629-protected.pdf");
+                                startDownload(getLinkOfBook(b.getBackupFile()));
                         }
 
                         // check for permanent denial of any permission
@@ -331,6 +337,14 @@ public class Detail_Book extends AppCompatActivity {
                 .onSameThread()
                 .check();
 
+    }
+    private String getLinkOfBook(String link){
+        if(link.contains("bayan")){
+            return  link;
+        }
+        else{
+            return Constants.Book_Directory+link;
+        }
     }
     private void showSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(Detail_Book.this);
@@ -375,14 +389,14 @@ public class Detail_Book extends AppCompatActivity {
         }
         file = new File (Environment.getExternalStorageDirectory(),"Ketabeman/Books");
 
-        downloadIdOne = PRDownloader.download(url, file.getPath(), b.getName()+".pdf")
+        downloadIdOne = PRDownloader.download(url, file.getPath(), b.getFullName()+".pdf")
                 .build()
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
                     public void onStartOrResume() {
                         progressBarOne.setIndeterminate(false);
                         buttonOne.setEnabled(true);
-                        buttonOne.setText("pause");
+                        buttonOne.setText("توقف");
                         buttonCancelOne.setEnabled(true);
                     }
                 })
@@ -417,6 +431,10 @@ public class Detail_Book extends AppCompatActivity {
                     public void onDownloadComplete() {
                         try {
                             //new SaveData(Detail_Book.this).execute(b.getCover());
+
+                            Intent i = new Intent(Detail_Book.this,PDF_reader.class);
+                            i.putExtra("address_book",file.getPath()+"/"+b.getFullName()+".pdf");
+                            startActivity(i);
                         }
                         catch (Exception e){
                             Toast.makeText(Detail_Book.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -433,6 +451,7 @@ public class Detail_Book extends AppCompatActivity {
                         progressBarOne.setIndeterminate(false);
                         buttonOne.setEnabled(true);
                         Log.e("Error",error.toString());
+                        Toast.makeText(Detail_Book.this, error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
