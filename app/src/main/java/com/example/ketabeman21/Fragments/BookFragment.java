@@ -14,6 +14,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,8 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
     private RecyclerView mRecyclerView;
     private ArrayList<Book> mArrayList;
     private DataAdapter4Book mAdapter;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
     public static final String TITLE = "کتابها";
     View rootView;
     public static BookFragment newInstance() {
@@ -83,10 +86,13 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
        /* mShimmerViewContainer = (ShimmerFrameLayout) rootView.findViewById(R.id.shimmer_view_container);
         floatingActionButton = rootView.findViewById(R.id.fab);*/
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.card_recycler_view);
+        mShimmerViewContainer = rootView.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmer();
         /*mShimmerViewContainer.setVisibility(View.INVISIBLE);
         mRecyclerView.setHasFixedSize(true);*/
         //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // true if item was selected
        // mRecyclerView.setLayoutManager(layoutManager);
@@ -109,8 +115,8 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
                 mArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getBook()));
                 mAdapter = new DataAdapter4Book(mArrayList,getActivity(),BookFragment.this,BookFragment.this);
                 mRecyclerView.setAdapter(mAdapter);
-               /* mShimmerViewContainer.stopShimmerAnimation();
-                mShimmerViewContainer.setVisibility(View.GONE);*/
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
             }
 
             @Override
@@ -164,7 +170,7 @@ public class BookFragment extends Fragment implements DataAdapter4Book.BookAdapt
 
     @Override
     public void onPause() {
-        // mShimmerViewContainer.stopShimmerAnimation();
+         mShimmerViewContainer.stopShimmer();
         super.onPause();
     }
 

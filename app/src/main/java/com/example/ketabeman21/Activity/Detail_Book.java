@@ -200,7 +200,7 @@ public class Detail_Book extends AppCompatActivity {
         textViewProgressOne = (TextView) findViewById(R.id.textViewProgressOne);
         buttonOne = (Button) findViewById(R.id.buttonOne);
         textViewProgressOne = (TextView) findViewById(R.id.textViewProgressOne);
-        progressBarOne = (ProgressBar) findViewById(R.id.progressBarOne);
+        progressBarOne =  findViewById(R.id.progressBarOne);
         buttonCancelOne = (Button) findViewById(R.id.buttonCancelOne);
 
         author.setText("نویسنده : "+b.getAuthor());

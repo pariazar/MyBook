@@ -43,7 +43,7 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     implementation 'com.squareup.picasso:picasso:2.3.2'
     implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4'
-    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
 
     //Excluding httpclient since it is already part of httpclient-android
@@ -64,5 +64,4 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
     implementation 'me.grantland:autofittextview:0.2.+'
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
-    implementation 'com.akexorcist:round-corner-progress-bar:2.1.1'
 }
