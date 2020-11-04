@@ -313,7 +313,7 @@ public class Detail_Book extends AppCompatActivity {
                         // check if all permissions are granted
                         if (report.areAllPermissionsGranted()) {
                             Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
-                                startDownload(getLinkOfBook(b.getBackupFile()));
+                                startDownload("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"/*getLinkOfBook(b.getBackupFile())*/);
                         }
 
                         // check for permanent denial of any permission
@@ -432,9 +432,14 @@ public class Detail_Book extends AppCompatActivity {
                         try {
                             //new SaveData(Detail_Book.this).execute(b.getCover());
 
-                            Intent i = new Intent(Detail_Book.this,PDF_reader.class);
-                            i.putExtra("address_book",file.getPath()+"/"+b.getFullName()+".pdf");
-                            startActivity(i);
+                            /*Intent i = new Intent(Detail_Book.this,PDF_reader.class);
+                            i.putExtra("address_book",file.getPath()+"/"+b.getFullName()+".pdf");*/
+                            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + b.getFullName()+".pdf");
+                            //   EPF epf = new EPF(file.getAbsolutePath(),b.getName(),this,"myStaticKey","9411211908");
+
+                            Intent intent = new Intent(Detail_Book.this,PDF_reader.class);
+                            intent.putExtra("pdfPath",file.getAbsolutePath());
+                            startActivity(intent);
                         }
                         catch (Exception e){
                             Toast.makeText(Detail_Book.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -518,7 +523,7 @@ public class Detail_Book extends AppCompatActivity {
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }*/
-            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "DecoderStore/Books/" + b.getName()+".pdf");
+            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + b.getName()+".pdf");
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
