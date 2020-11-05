@@ -44,16 +44,16 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_home:
                         if (nw.isOnline()) {
                             loadFragment(book_fragment);
-                        } else {
+                        }/* else {
                             loadFragment(offline_mode);
-                        }
+                        }*/
                         return true;
                     case R.id.nav_conversation:
-                        loadFragment(offline_mode);
 
                         //loadFragment(private_fragment);
                         return true;
                     case R.id.nav_mybooks:
+                        loadFragment(offline_mode);
                         // Toast.makeText(BookAndM.this, "clicked", Toast.LENGTH_SHORT).show();
                         //loadFragment(my_book_fragment);
                         return true;

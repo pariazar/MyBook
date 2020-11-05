@@ -1,4 +1,4 @@
-package com.example.ketabeman21.Model.DB;
+package com.example.ketabeman21.Adapter;
 
 
 import android.content.ContentValues;
@@ -26,18 +26,16 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
         public static String Author = "writer";
         public static String Edition = "Edition";
         public static String PageNumber = "PageNumber";
-        public static String ISBN = "ISBN";
-        public static String AuthorType = "AuthorType";
+        public static String ISBN10 = "ISBN10";
+        public static String ISBN13 = "ISBN13";
         public static String Description = "Description";
         public static String BookURL = "BookURL";
-        public static String BookPass = "BookPass";
-        public static String Jeld = "Jeld";
         public static String BookCoverPicture = "BookCoverPicture";
         public static String BookPrice = "BookPrice";
         public static String PublishYear = "PublishYear";
-        public static String WaitingList = "WaitingList";
-        public static String ActionType = "ActionType";
-        public static String ActionTime = "ActionTime";
+        public static String PUBLISHER = "Publisher";
+        public static String Langusage = "Langusage";
+
         String br;
         File file;
         public DatabaseHelperOfflineBook(Context context) {
@@ -49,9 +47,9 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
         public void onCreate(SQLiteDatabase db) {
             //  br= "CREATE TABLE mytable(name TEXT,company TEXT,city TEXT,country TEXT);";
             br = "CREATE TABLE "+TABLE+"("+BookID+ " Text, "+Name+ " Text, "+Author+ " Text, "+Edition+ " Text, "+
-                    PageNumber+ " Text, "+ISBN+ " Text, "+AuthorType+ " Text, "+Description+ " Text, "
-                    +BookURL+ " Text, "+Jeld+ " Text, "+BookPrice+ " Text, "+PublishYear+ " Text, "+WaitingList+ " Text, "
-                    +ActionType+ " Text, "+BookPass+ " Text, "+ActionTime+ " Text, "+BookCoverPicture+ " Text);";
+                    PageNumber+ " Text, "+ISBN10+ " Text, "+ISBN13+ " Text, "+PUBLISHER+ " Text, "+Description+ " Text, "
+                    +BookURL+ " Text, "+BookPrice+ " Text, "+Langusage+ " Text, "+PublishYear+ " Text, "
+                    +BookCoverPicture+ " Text);";
             db.execSQL(br);
 
         }
@@ -68,18 +66,15 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
                 String author ,
                 String edition ,
                 String pageNumber ,
-                String isbn ,
-                String authorType ,
+                String isbn10 ,
+                String isbn13 ,
+                String publisher ,
+                String langusage ,
                 String description ,
                 String bookURL ,
-                String jeld ,
                 String bookCoverPicture ,
                 String bookPrice ,
-                String publishYear ,
-                String waitingList ,
-                String bookPass ,
-                String actionType ,
-                String actionTime ){
+                String publishYear){
             System.out.print("Hello "+br);
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues= new ContentValues();
@@ -90,18 +85,15 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
             contentValues.put(Author, author);
             contentValues.put(Edition, edition);
             contentValues.put(PageNumber, pageNumber);
-            contentValues.put(ISBN, isbn);
-            contentValues.put(AuthorType, authorType);
+            contentValues.put(ISBN10, isbn10);
+            contentValues.put(ISBN13, isbn13);
             contentValues.put(Description, description);
             contentValues.put(BookURL, bookURL);
-            contentValues.put(Jeld, jeld);
             contentValues.put(BookCoverPicture, bookCoverPicture);
             contentValues.put(BookPrice, bookPrice);
             contentValues.put(PublishYear, publishYear);
-            contentValues.put(WaitingList, waitingList);
-            contentValues.put(ActionType, actionType);
-            contentValues.put(BookPass, bookPass);
-            contentValues.put(ActionTime, actionTime);
+            contentValues.put(PUBLISHER, publisher);
+            contentValues.put(Langusage, langusage);
 
             db.insert(TABLE,null,contentValues);
 
@@ -153,7 +145,6 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
             return false;
         }
     }
-    /*
         public ArrayList<Book> getdata(){
             // DataModel dataModel = new DataModel();
             ArrayList<Book> data=new ArrayList<>();
@@ -168,49 +159,44 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
                 String author = cursor.getString(cursor.getColumnIndexOrThrow("writer"));
                 String edition = cursor.getString(cursor.getColumnIndexOrThrow("Edition"));
                 String page_number = cursor.getString(cursor.getColumnIndexOrThrow("PageNumber"));
-                String isbn = cursor.getString(cursor.getColumnIndexOrThrow("ISBN"));
-                String author_type = cursor.getString(cursor.getColumnIndexOrThrow("AuthorType"));
+                String isbn10 = cursor.getString(cursor.getColumnIndexOrThrow("ISBN10"));
+                String isbn13 = cursor.getString(cursor.getColumnIndexOrThrow("ISBN13"));
+                String publisher = cursor.getString(cursor.getColumnIndexOrThrow("Publisher"));
+                String language = cursor.getString(cursor.getColumnIndexOrThrow("Langusage"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("Description"));
                 String bookurl = cursor.getString(cursor.getColumnIndexOrThrow("BookURL"));
-                String jeld = cursor.getString(cursor.getColumnIndexOrThrow("Jeld"));
                 String bookCover = cursor.getString(cursor.getColumnIndexOrThrow("BookCoverPicture"));
                 String bookPrice = cursor.getString(cursor.getColumnIndexOrThrow("BookPrice"));
                 String publish_year = cursor.getString(cursor.getColumnIndexOrThrow("PublishYear"));
-                String waiting_list = cursor.getString(cursor.getColumnIndexOrThrow("WaitingList"));
-                String action_type = cursor.getString(cursor.getColumnIndexOrThrow("ActionType"));
-                String bookPass = cursor.getString(cursor.getColumnIndexOrThrow("BookPass"));
-                String action_time = cursor.getString(cursor.getColumnIndexOrThrow("ActionTime"));
-                dataModel.setBookID(Integer.parseInt(bookID));
+
+                dataModel.setBookId(bookID);
                 dataModel.setName(name);
-                dataModel.setActionTime(action_time);
-                dataModel.setAuthorType(Integer.parseInt(author_type));
-                dataModel.setBookCoverPicture(bookCover);
-                dataModel.setBookPrice(Long.parseLong(bookPrice));
-                dataModel.setEdition(Integer.parseInt(edition));
-                dataModel.setBookURL(bookurl);
+                dataModel.setCover(bookCover);
+                dataModel.setPrice(bookPrice);
+                dataModel.setEdition(edition);
+                dataModel.setBookFile(bookurl);
                 dataModel.setAuthor(author);
-                dataModel.setBookPass(bookPass);
-                dataModel.setJeld(Integer.parseInt(jeld));
-                dataModel.setPublishYear(Integer.parseInt(publish_year));
-                dataModel.setWaitingList(Integer.parseInt(waiting_list));
-                dataModel.setActionType(Integer.parseInt(action_type));
-                dataModel.setPageNumber(Integer.parseInt(page_number));
+                dataModel.setYear(publish_year);
+                dataModel.setPage(Integer.parseInt(page_number));
                 dataModel.setDescription(description);
-                dataModel.setISBN(Integer.parseInt(isbn));
+                dataModel.setISBN10(isbn10);
+                dataModel.setISBN13(isbn13);
+                dataModel.setPublisher(publisher);
+                dataModel.setPublisher(language);
                 stringBuffer.append(dataModel);
                 // stringBuffer.append(dataModel);
-                file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Azad_University/Books/" + dataModel.getName()+".pdf");
+                file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + dataModel.getName()+".pdf");
                 if(file.exists()){
                     data.add(dataModel);
                 }
                 else {
-                    deleteBook(String.valueOf(dataModel.getBookID()));
+                    deleteBook(String.valueOf(dataModel.getBookId()));
                 }
             }
 
             for (Book mo:data ) {
 
-                Log.i("Hellomo",""+mo.getBookID());
+                Log.i("Hellomo",""+mo.getBookId());
             }
 
             //
@@ -241,6 +227,6 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
         {
             SQLiteDatabase db = this.getWritableDatabase();
             return db.delete(TABLE, BookID + "=" + id, null) > 0;
-        }*/
+        }
 
 }

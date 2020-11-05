@@ -5,10 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -28,12 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -44,80 +37,47 @@ import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.Status;
 import com.example.ketabeman21.Adapter.DataAdapter4Book;
+import com.example.ketabeman21.Adapter.DatabaseHelperOfflineBook;
+import com.example.ketabeman21.Helper.ManipulateData;
 import com.example.ketabeman21.Helper.SharedPreferencesHelper;
 import com.example.ketabeman21.Model.Book;
-import com.example.ketabeman21.Model.DB.DatabaseHelperOfflineBook;
 import com.example.ketabeman21.R;
+import com.example.ketabeman21.Utils.GenerateSerialNumber;
 import com.example.ketabeman21.Utils.Utils;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.hsalf.smilerating.BaseRating;
-import com.hsalf.smilerating.SmileRating;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.DexterError;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.scottyab.aescrypt.AESCrypt;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.invoke.ConstantCallSite;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+
 import info.hoang8f.widget.FButton;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 import me.grantland.widget.AutofitHelper;
 import me.grantland.widget.AutofitTextView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 import com.example.ketabeman21.Utils.Constants;
 
-import android.app.DownloadManager;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-
-import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 @SuppressLint("NewApi")
 public class Detail_Book extends AppCompatActivity {
@@ -177,6 +137,7 @@ public class Detail_Book extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        offlineBookDB = new DatabaseHelperOfflineBook(this);
         try{
             b = (Book) getIntent().getSerializableExtra("ibook");
         }
@@ -430,16 +391,12 @@ public class Detail_Book extends AppCompatActivity {
                     @Override
                     public void onDownloadComplete() {
                         try {
-                            //new SaveData(Detail_Book.this).execute(b.getCover());
+                            Log.d("d25x1","before Download");
+                            new SaveData(Detail_Book.this).execute(Constants.Image_Directory+b.getCover());
 
                             /*Intent i = new Intent(Detail_Book.this,PDF_reader.class);
                             i.putExtra("address_book",file.getPath()+"/"+b.getFullName()+".pdf");*/
-                            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + b.getFullName()+".pdf");
-                            //   EPF epf = new EPF(file.getAbsolutePath(),b.getName(),this,"myStaticKey","9411211908");
 
-                            Intent intent = new Intent(Detail_Book.this,PDF_reader.class);
-                            intent.putExtra("pdfPath",file.getAbsolutePath());
-                            startActivity(intent);
                         }
                         catch (Exception e){
                             Toast.makeText(Detail_Book.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -468,18 +425,23 @@ public class Detail_Book extends AppCompatActivity {
         private ProgressDialog dialog;
 
         public SaveData(Detail_Book activity) {
-            dialog = new ProgressDialog(getApplicationContext());
+            dialog = new ProgressDialog(Detail_Book.this);
         }
         @Override
         protected void onPreExecute() {
+            Log.d("d25x1","before Progress");
             dialog.setMessage("در حال آماده سازی فایل PDF");
             dialog.show();
-            SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(Detail_Book.this);
+            Log.d("d25x1","after Progress");
+
             try {
-              /*  up = GenerateSerialNumber.createTransactionID(sharedPreferencesHelper.getString(Constants.USERNAME));
-                ManipulateData.makeReadyPDF(Detail_Book.this,getBaseContext(),b.getName(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "DecoderStore/Books/" + b.getName()+".pdf", up,sharedPreferencesHelper.getString(Constants.USERNAME));*/
+                Log.d("d25x1","before manipulate");
+
+                ManipulateData.makeReadyPDF(Detail_Book.this,getBaseContext(),b.getFullName(),Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + b.getFullName()+".pdf","Ketabeman");
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d("d25x1","after manipulate");
+
             }
             super.onPreExecute();
         }
@@ -487,12 +449,14 @@ public class Detail_Book extends AppCompatActivity {
         protected String doInBackground(String... aurl) {
             int count;
             try {
+                Log.d("d25x1","downloading cover");
+
                 URL url = new URL((String) aurl[0]);
                 URLConnection conexion = url.openConnection();
                 conexion.connect();
                 String targetFileName=b.getBookId()+".png";//Change name and subname
                 int lenghtOfFile = conexion.getContentLength();
-                String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "DecoderStore/Books/covers/";
+                String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/covers/";
                 File folder = new File(PATH);
                 if(!folder.exists()){
                     folder.mkdir();//If there is no folder it will be created.
@@ -517,17 +481,28 @@ public class Detail_Book extends AppCompatActivity {
 
         }
         protected void onPostExecute(String result) {
-            //blackBox = new BlackBox(Detail.this);
-           /* try{
-                offlineBookDB.insertdata(cvs(b.getBookID()),b.getName(),b.getAuthor(),cvs(b.getEdition()),cvs(b.getPageNumber()),cvs(b.getISBN()),cvs(b.getAuthorType()),b.getDescription(),b.getBookURL(),cvs(b.getJeld()),b.getBookCoverPicture(),String.valueOf( b.getBookPrice()),cvs(b.getPublishYear()),cvs(b.getWaitingList()), AESCrypt.encrypt(blackBox.dhcp2FromJNI(),up),cvs(b.getActionType()),String.valueOf(b.getActionTime()));
-            } catch (GeneralSecurityException e) {
-                e.printStackTrace();
-            }*/
-            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + b.getName()+".pdf");
+            Log.d("d25x1","before inserting to database");
+
+            offlineBookDB.insertdata(b.getBookId(),b.getFullName(),b.getAuthor(),b.getEdition(),String.valueOf(b.getPage()),b.getISBN10(),b.getISBN13(),
+                    b.getPublisher(),b.getLanguage(),b.getDescription(),b.getBookFile(),b.getCover(),String.valueOf( b.getPrice()),b.getPublisher());
+
+            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + b.getFullName()+".pdf");
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-          //  open_pdf_in_PDFReader(file,true);
+
+
+            Log.d("d25x1","before openning pdf reader");
+
+           open_pdf_in_PDFReader();
         }
+    }
+    private void open_pdf_in_PDFReader(){
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + b.getFullName()+"_withWaterMark"+".pdf");
+        //   EPF epf = new EPF(file.getAbsolutePath(),b.getName(),this,"myStaticKey","9411211908");
+
+        Intent intent = new Intent(Detail_Book.this,PDF_reader.class);
+        intent.putExtra("pdfPath",file.getAbsolutePath());
+        startActivity(intent);
     }
 }
