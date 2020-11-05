@@ -87,13 +87,13 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
             contentValues.put(PageNumber, pageNumber);
             contentValues.put(ISBN10, isbn10);
             contentValues.put(ISBN13, isbn13);
+            contentValues.put(PUBLISHER, publisher);
             contentValues.put(Description, description);
             contentValues.put(BookURL, bookURL);
-            contentValues.put(BookCoverPicture, bookCoverPicture);
             contentValues.put(BookPrice, bookPrice);
-            contentValues.put(PublishYear, publishYear);
-            contentValues.put(PUBLISHER, publisher);
             contentValues.put(Langusage, langusage);
+            contentValues.put(PublishYear, publishYear);
+            contentValues.put(BookCoverPicture, bookCoverPicture);
 
             db.insert(TABLE,null,contentValues);
 
@@ -170,7 +170,7 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
                 String publish_year = cursor.getString(cursor.getColumnIndexOrThrow("PublishYear"));
 
                 dataModel.setBookId(bookID);
-                dataModel.setName(name);
+                dataModel.setFullName(name);
                 dataModel.setCover(bookCover);
                 dataModel.setPrice(bookPrice);
                 dataModel.setEdition(edition);
@@ -185,7 +185,7 @@ public class DatabaseHelperOfflineBook extends SQLiteOpenHelper {
                 dataModel.setPublisher(language);
                 stringBuffer.append(dataModel);
                 // stringBuffer.append(dataModel);
-                file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + dataModel.getName()+".pdf");
+                file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + dataModel.getFullName()+"_withWaterMark"+".pdf");
                 if(file.exists()){
                     data.add(dataModel);
                 }

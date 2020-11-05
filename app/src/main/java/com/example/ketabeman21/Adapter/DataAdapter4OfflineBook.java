@@ -74,7 +74,7 @@ public class DataAdapter4OfflineBook extends RecyclerView.Adapter<DataAdapter4Of
     @Override
     public void onBindViewHolder(Myholder holder, int position) {
         Book dataModel=dataModelArrayList.get(position);
-        holder.name.setText(dataModel.getName());
+        holder.name.setText(dataModel.getFullName());
         holder.author.setText(dataModel.getAuthor());
         String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/covers/"+dataModel.getBookId()+".png";
 

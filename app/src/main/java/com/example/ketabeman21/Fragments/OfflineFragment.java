@@ -64,6 +64,8 @@ public class OfflineFragment extends Fragment implements  DataAdapter4OfflineBoo
         empty_rl  = rootView.findViewById(R.id.emrl);
         datamodel =new ArrayList<Book>();
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle);
+        loadData();
+
         if(database.check_empty_lib()){
             Toast.makeText(getContext(), "true", Toast.LENGTH_SHORT).show();
             recyclerView.setVisibility(View.GONE);
@@ -129,7 +131,7 @@ public class OfflineFragment extends Fragment implements  DataAdapter4OfflineBoo
 
     @Override
     public void onBookSelected(Book book) {
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "DecoderStore/Books/" + book.getName()+".pdf");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Ketabeman/Books/" + book.getFullName()+"_withWaterMark"+".pdf");
         open_pdf_in_PDFReader(file,book);
 
     }
