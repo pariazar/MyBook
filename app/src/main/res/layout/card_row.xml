@@ -29,17 +29,19 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/image"
+                android:singleLine="false"
+                android:maxLines="4"
                 android:fontFamily="serif"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
-                android:text="hamed"
+                android:text="Book name"
                 android:textColor="#111"
                 android:textSize="14dp"
                 android:textStyle="bold" />

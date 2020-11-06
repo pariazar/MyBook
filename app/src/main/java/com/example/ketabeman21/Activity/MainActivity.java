@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.ketabeman21.Fragments.BookFragment;
+import com.example.ketabeman21.Fragments.ExploreFragment;
 import com.example.ketabeman21.Fragments.OfflineFragment;
 import com.example.ketabeman21.Network.Network;
 import com.example.ketabeman21.R;
@@ -18,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Fragment book_fragment,private_fragment
+    private Fragment book_fragment,explore_fragment
             ,my_book_fragment,offline_mode,profile,about,suggest;
     private Network nw;
     public static Typeface my_font;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         book_fragment = new BookFragment();
         offline_mode = new OfflineFragment();
+        explore_fragment = new ExploreFragment();
         loadFragment(book_fragment);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setSelectedItemId(R.id.nav_home);
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
                             loadFragment(offline_mode);
                         }*/
                         return true;
-                    case R.id.nav_conversation:
+                    case R.id.nav_explore:
+                        loadFragment(explore_fragment);
 
                         //loadFragment(private_fragment);
                         return true;

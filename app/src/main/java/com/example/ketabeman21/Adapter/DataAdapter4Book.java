@@ -50,7 +50,7 @@ public class DataAdapter4Book extends RecyclerView.Adapter<DataAdapter4Book.View
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
 
-        viewHolder.tv_name.setText(mFilteredList.get(i).getName());
+        viewHolder.tv_name.setText(mFilteredList.get(i).getFullName());
         viewHolder.tv_version.setText(mFilteredList.get(i).getAuthor());
         viewHolder.tv_username.setText(mFilteredList.get(i).getISBN10());
         viewHolder.tv_price.setText(mFilteredList.get(i).getPrice());

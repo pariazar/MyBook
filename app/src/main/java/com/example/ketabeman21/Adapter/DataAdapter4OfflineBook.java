@@ -22,9 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-/**
- * Created by csa on 3/1/2017.
- */
+
 
 public class DataAdapter4OfflineBook extends RecyclerView.Adapter<DataAdapter4OfflineBook.Myholder>  implements Filterable {
     ArrayList<Book> dataModelArrayList;

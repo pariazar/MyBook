@@ -3,11 +3,11 @@
 
 
         <item
-            android:id="@+id/nav_conversation"
+            android:id="@+id/nav_home"
             android:icon="@drawable/home"
             android:title="خانه" />
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_explore"
             android:icon="@drawable/magni"
             android:title="جستجو" />
         <item
