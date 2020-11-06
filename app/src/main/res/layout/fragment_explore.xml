@@ -14,7 +14,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="150dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorAccent"
+            app:contentScrim="@color/action_bar"
             app:expandedTitleTextAppearance="@null"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title="">
@@ -42,26 +42,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.flaviofaria.kenburnsview.KenBurnsView
-                    android:id="@+id/backf"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/downloads"
-                    android:fitsSystemWindows="true"
-                    android:src="@drawable/magni"
 
-                    app:layout_collapseMode="pin" />
                 <TextView
                     android:id="@+id/newusers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="اعضای جدید"
+                    android:text="کتاب من"
                     android:textSize="18dp"
+                    android:textColor="@color/cardview_dark_background"
                     android:textStyle="bold"
                     android:gravity="center"/>
-
+                <com.paulrybitskyi.persistentsearchview.PersistentSearchView
+                    android:id="@+id/persistentSearchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/newusers"
+                    android:paddingTop="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingRight="4dp"
+                    android:layout_above="@+id/ntb"
+                    android:paddingEnd="4dp"/>
 
                 <devlight.io.library.ntb.NavigationTabBar
                     android:id="@+id/ntb"
@@ -89,20 +90,6 @@
                     app:ntb_title_size="10sp"
                     app:ntb_titled="true"
                     app:ntb_typeface="fonts/custom_typeface.ttf" />
-
-
-                <TextView
-                    android:id="@+id/hamed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/comment"
-                    android:gravity="bottom|center"
-                    android:text=""
-
-                    android:textColor="@color/cardview_light_background"
-                    android:textSize="15dp"
-                    android:textStyle="italic" />
             </RelativeLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

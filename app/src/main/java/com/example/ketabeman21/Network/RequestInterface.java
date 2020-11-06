@@ -22,6 +22,9 @@ public interface RequestInterface {
 
     @GET("/")
     Call<JSONResponse> getJSONBook(@Query("action") String action);
+    
+    @GET("/")
+    Call<JSONResponse> getSubCat(@Query("action") String action,@Query("sub") String Catid);
 
     @GET("/newestbook.php")
     Call<JSONResponse> getJSONNewestBook();
