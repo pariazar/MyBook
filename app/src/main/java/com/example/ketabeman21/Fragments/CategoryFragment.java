@@ -36,13 +36,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CategoryFragment extends Fragment implements DataAdapter4Cat.CategoryAdapterListener {
+public class CategoryFragment extends Fragment implements DataAdapter4Cat.CategoryAdapterListener,DataAdapter4Book.BookAdapterListener,DataAdapter4Book.BookDetailAdapterListener {
 
     private RecyclerView mRecyclerView;
     private ArrayList<Category> mArrayList;
+    private ArrayList<Book> bArrayList;
     private DataAdapter4Cat mAdapter;
+    private DataAdapter4Book bAdapter;
     private ShimmerFrameLayout mShimmerViewContainer;
-
+    private Boolean isSub;
     View rootView;
     public static CategoryFragment newInstance() {
         return new CategoryFragment();
@@ -105,6 +107,7 @@ public class CategoryFragment extends Fragment implements DataAdapter4Cat.Catego
                 mRecyclerView.setAdapter(mAdapter);
                 mShimmerViewContainer.stopShimmer();
                 mShimmerViewContainer.setVisibility(View.GONE);
+                isSub = false;
             }
 
             @Override
@@ -132,6 +135,8 @@ public class CategoryFragment extends Fragment implements DataAdapter4Cat.Catego
                 mRecyclerView.setAdapter(mAdapter);
                 mShimmerViewContainer.stopShimmer();
                 mShimmerViewContainer.setVisibility(View.GONE);
+                isSub = true;
+
             }
 
             @Override
@@ -141,7 +146,32 @@ public class CategoryFragment extends Fragment implements DataAdapter4Cat.Catego
         });
     }
 
+    private void loadJSONBook(String subName){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RequestInterface request = retrofit.create(RequestInterface.class);
+        Call<JSONResponse> call = request.getSubCat("5",subName);
+        call.enqueue(new Callback<JSONResponse>() {
+            @Override
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
 
+                JSONResponse jsonResponse = response.body();
+                bArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getBook()));
+                bAdapter = new DataAdapter4Book(bArrayList,getActivity(), CategoryFragment.this,CategoryFragment.this);
+                mRecyclerView.setAdapter(bAdapter);
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
+                isSub = false;
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                Log.d("Error",t.getMessage());
+            }
+        });
+    }
 
     private void search(SearchView searchView) {
 
@@ -182,6 +212,24 @@ public class CategoryFragment extends Fragment implements DataAdapter4Cat.Catego
 
     @Override
     public void onCategorySelected(Category Category) {
-        loadJSONSubCategory(Category.getName());
+        if (!isSub) {
+            loadJSONSubCategory(Category.getName());
+        }
+        else{
+            loadJSONBook(Category.getName());
+        }
+    }
+
+    @Override
+    public void onContactSelected(Book book) {
+
+    }
+
+    @Override
+    public void onBookSelected(Book book) {
+        Toast.makeText(getContext(), book.getAuthor()+"دانلود کتاب ", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(getContext(), Detail_Book.class);
+        i.putExtra("ibook",book);
+        startActivity(i);
     }
 }
