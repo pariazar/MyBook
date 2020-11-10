@@ -38,6 +38,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.Register" />
+        <activity android:name=".Activity.Login"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity
             android:name=".Activity.Detail_Book"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

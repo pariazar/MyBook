@@ -14,11 +14,20 @@ import retrofit2.http.Streaming;
 
 public interface RequestInterface {
 
-    /*@POST("/")
-    Call<JSONResponse> getJSONBook(
-            @Field("action") String action,
-            @Field("page") String page
-    );*/
+    @FormUrlEncoded
+    @POST("/login.php")
+    Call<String>  getUserLogin(
+            @Field("email") String email,
+            @Field("password") String password
+    );
+    @FormUrlEncoded
+    @POST("/register.php")
+    Call<String>  getUserRegister(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("pic") String pic,
+            @Field("password") String password
+    );
 
     @GET("/")
     Call<JSONResponse> getJSONBook(@Query("action") String action);

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ketabeman21.Fragments.BookFragment;
 import com.example.ketabeman21.Fragments.ExploreFragment;
+import com.example.ketabeman21.Fragments.HomeFragment;
 import com.example.ketabeman21.Fragments.OfflineFragment;
 import com.example.ketabeman21.Network.Network;
 import com.example.ketabeman21.R;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         nw = new Network(MainActivity.this);
         my_font = Typeface.createFromAsset(getAssets(),"font/IRAN Sans Light.ttf");
 
-        book_fragment = new BookFragment();
+        book_fragment = new HomeFragment();
         offline_mode = new OfflineFragment();
         explore_fragment = new ExploreFragment();
         loadFragment(book_fragment);
