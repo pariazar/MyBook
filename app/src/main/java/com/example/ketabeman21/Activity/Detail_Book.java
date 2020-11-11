@@ -274,7 +274,7 @@ public class Detail_Book extends AppCompatActivity {
                         // check if all permissions are granted
                         if (report.areAllPermissionsGranted()) {
                             Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
-                                startDownload("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"/*getLinkOfBook(b.getBackupFile())*/);
+                                startDownload(getLinkOfBook(b.getBookFile()));
                         }
 
                         // check for permanent denial of any permission

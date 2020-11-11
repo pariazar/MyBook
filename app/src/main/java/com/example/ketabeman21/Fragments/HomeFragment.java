@@ -13,11 +13,14 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.ketabeman21.Activity.Detail_Book;
 import com.example.ketabeman21.Activity.Register;
 import com.example.ketabeman21.Adapter.DataAdapter4Book;
@@ -56,7 +59,7 @@ public class HomeFragment extends Fragment implements DataAdapter4Book.BookAdapt
 
 
 
-    private CircleImageView profileImage;
+    private ImageView profileImage;
     private ImageView more;
     final String myAddress = Constants.BASE_URL+"/files/profilepics/";
     private SQLiteHandler db;
@@ -64,6 +67,9 @@ public class HomeFragment extends Fragment implements DataAdapter4Book.BookAdapt
     private Button registerBTN;
     private AutofitTextView username,name;
     HashMap<String, String> user;
+    ColorGenerator generator = ColorGenerator.MATERIAL;
+    private CardView cardView1,cardView2;
+
 
     public static final String TITLE = "کتابها";
     View rootView;
@@ -81,6 +87,8 @@ public class HomeFragment extends Fragment implements DataAdapter4Book.BookAdapt
         name = rootView.findViewById(R.id.tv_name);
         profileImage = rootView.findViewById(R.id.profile);
         more = rootView.findViewById(R.id.more);
+        cardView1 = rootView.findViewById(R.id.profilecard);
+        cardView2 = rootView.findViewById(R.id.profilecard2);
         AutofitHelper.create(name);
         AutofitHelper.create(username);
 
@@ -92,9 +100,21 @@ public class HomeFragment extends Fragment implements DataAdapter4Book.BookAdapt
             username.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             user = db.getUserDetails();
-            Picasso.with(getContext())
-                    .load(myAddress+user.get("pic"))
-                    .into(profileImage);
+           if(user.get("pic").contains("noImage")) {
+
+               String letter = String.valueOf(user.get("email").charAt(0));
+               Log.d("picaso",user.get("pic") + "in if condition");
+
+               TextDrawable drawable = TextDrawable.builder()
+                       .buildRound(letter, generator.getRandomColor());
+
+               profileImage.setImageDrawable(drawable);
+           }
+           else{
+               Picasso.with(getContext())
+                       .load(myAddress+user.get("pic"))
+                       .into(profileImage);
+           }
             username.setText(user.get("email"));
             name.setText(user.get("name"));
             Log.d("picaso",user.get("pic"));
@@ -165,6 +185,8 @@ public class HomeFragment extends Fragment implements DataAdapter4Book.BookAdapt
         registerBTN.setVisibility(View.VISIBLE);
         username.setVisibility(View.GONE);
         name.setVisibility(View.GONE);
+        cardView1.setVisibility(View.GONE);
+        cardView2.setVisibility(View.GONE);
         registerBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
